@@ -20,12 +20,17 @@ public class UserController {
     private IUserRepository userRepository;
 
     
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public UserModel createUser(@RequestBody UserModel user){
         return userRepository.save(user);
     }
 
-    @RequestMapping(value = "/getUserById/{id}", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
+    public String getUsers(){
+        return "No User";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Optional<UserModel> getUserById(@PathVariable("id") String id) {
         return userRepository.findById(id);
     }
