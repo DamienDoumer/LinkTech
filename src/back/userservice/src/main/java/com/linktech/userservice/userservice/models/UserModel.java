@@ -1,7 +1,6 @@
 package com.linktech.userservice.userservice.models;
 
 import java.util.ArrayList;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
