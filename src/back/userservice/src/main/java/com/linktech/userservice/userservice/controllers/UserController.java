@@ -1,5 +1,4 @@
 package com.linktech.userservice.userservice.controllers;
-
 import java.util.Optional;
 
 import com.linktech.userservice.userservice.models.UserModel;
