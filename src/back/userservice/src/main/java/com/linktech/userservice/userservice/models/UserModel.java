@@ -11,16 +11,58 @@ public class UserModel extends BaseModel {
     String secondName;
     String email;
     ArrayList<UserActivityModel> activities;
+    ArrayList<String> followers;
+    ArrayList<String> following;
+    boolean isBanned;
 
     public UserModel() {
     }
 
     public UserModel(boolean isAdmin, String firstName, String secondName, String email, ArrayList<UserActivityModel> activities) {
         this.isAdmin = isAdmin;
-        this.firstName = firstName;
-        this.secondName = secondName;
         this.email = email;
         this.activities = activities;
+        this.firstName = firstName;
+        this.secondName = secondName;
+    }
+
+    public ArrayList<String> getFollowers(){
+        return this.followers;
+    }
+
+    /**
+     * @param followers the followers to set
+     */
+    public void setFollowers(ArrayList<String> followers) {
+        this.followers = followers;
+    }
+
+    /**
+     * @return the following
+     */
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    /**
+     * @param following the following to set
+     */
+    public void setFollowing(ArrayList<String> following) {
+        this.following = following;
+    }
+
+    public String getSecondName() {
+        return this.secondName;
+    }
+	public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+	public void setSecondName(String name) {
+        this.secondName = name;
     }
 
     public boolean isIsAdmin() {
@@ -35,20 +77,13 @@ public class UserModel extends BaseModel {
         this.isAdmin = isAdmin;
     }
 
-    public String getFirstName() {
-        return this.firstName;
+    
+    public boolean getIsBanned() {
+        return this.isBanned;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return this.secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setIsBanned(boolean isAdmin) {
+        this.isBanned = isAdmin;
     }
 
     public String getEmail() {
@@ -72,16 +107,6 @@ public class UserModel extends BaseModel {
         return this;
     }
 
-    public UserModel firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public UserModel secondName(String secondName) {
-        this.secondName = secondName;
-        return this;
-    }
-
     public UserModel email(String email) {
         this.email = email;
         return this;
@@ -97,7 +122,6 @@ public class UserModel extends BaseModel {
         return "{" +
             " isAdmin='" + isIsAdmin() + "'" +
             ", firstName='" + getFirstName() + "'" +
-            ", secondName='" + getSecondName() + "'" +
             ", email='" + getEmail() + "'" +
             ", activities='" + getActivities() + "'" +
             "}";

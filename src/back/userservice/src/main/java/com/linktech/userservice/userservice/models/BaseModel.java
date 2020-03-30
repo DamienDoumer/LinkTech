@@ -12,8 +12,6 @@ public class BaseModel {
     private String id;
     private Date creationData;
 
-
-    
     public String getId() {
         return id;
     }
