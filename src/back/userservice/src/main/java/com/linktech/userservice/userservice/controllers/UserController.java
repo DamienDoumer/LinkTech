@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -37,6 +36,13 @@ public class UserController {
         return userRepository.findById(id);
     }
     
+    @PutMapping(value="/{id}")
+    public UserModel updateUser(@PathVariable String id, @RequestBody UserModel user) {
+        
+        user.setId(id);
+        return userRepository.save(user);
+    }
+
     // @GetMapping(value = "/searchByName/{firstName}")
     @GetMapping(value = "/searchByName")
     public List<UserModel> requestMethodName(@RequestParam(required = false, value = "firstName") String firstName,
@@ -78,5 +84,11 @@ public class UserController {
         userRepository.save(followingUser);
 
         return followingUser.getFollowing();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") String id)
+    {
+        userRepository.deleteById(id);
     }
 }
