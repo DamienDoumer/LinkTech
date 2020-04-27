@@ -1,17 +1,5 @@
-
- cd .apigateway/
- mvn spring-boot:run
-
-cd ../userservice/
- mvn spring-boot:run
-
- cd ./postsservice/
- mvn spring-boot:run
-
-
- cd ../messagesservice/
- mvn spring-boot:run
- 
- cd ./institutionsservice/
- mvn spring-boot:run
- 
+bash ./apigateway/run.sh &
+bash ./postsservice/run.sh &
+bash ./userservice/run.sh &
+bash ./messagesservice/run.sh &
+bash ./institutionsservice/run.sh &
