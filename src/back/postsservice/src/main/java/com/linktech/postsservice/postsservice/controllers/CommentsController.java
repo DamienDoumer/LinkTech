@@ -1,11 +1,14 @@
 package com.linktech.postsservice.postsservice.controllers;
 
-import java.util.List;
+import java.util.*;
+import java.util.NoSuchElementException;
 
 import com.linktech.postsservice.postsservice.models.Comment;
 import com.linktech.postsservice.postsservice.repositories.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/posts")
+@RequestMapping(value = "/comments")
 public class CommentsController {
 
     @Autowired
@@ -27,13 +30,26 @@ public class CommentsController {
     }
     
     @GetMapping("/getPostComments/{postId}")
-    public List<Comment> gePostComments(@PathVariable("postId") String postId){
-        return commentsRepository.findByPostId(postId);
+    public ResponseEntity<List<Comment>> gePostComments(@PathVariable("postId") String postId){
+       
+        try  {
+
+            List<Comment> comments = commentsRepository.findByPostId(postId);
+            return new ResponseEntity<>(comments, HttpStatus.OK);
+
+       }catch (NoSuchElementException e){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
     }
 
     @GetMapping(value="/{id}")
-    public Comment getPost(@PathVariable("id") String id) {
-        return commentsRepository.findById(id).get();
+    public ResponseEntity<Comment> getComment(@PathVariable("id") String id) {
+        try  {
+            Comment comment = commentsRepository.findById(id).get();
+            return new ResponseEntity<>(comment, HttpStatus.OK);
+       }catch (NoSuchElementException e){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
     }
     
     @PutMapping(value="/{id}")
