@@ -29,6 +29,7 @@ public class CommentsController {
         return commentsRepository.save(post);
     }
     
+    //Example of request: http://localhost:2303/comments/getPostComments/{postId}
     @GetMapping("/getPostComments/{postId}")
     public ResponseEntity<List<Comment>> gePostComments(@PathVariable("postId") String postId){
        
@@ -42,6 +43,7 @@ public class CommentsController {
        }
     }
 
+    //Example of request: http://localhost:2303/comments/{id}
     @GetMapping(value="/{id}")
     public ResponseEntity<Comment> getComment(@PathVariable("id") String id) {
         try  {

@@ -28,13 +28,14 @@ public class PostsController {
     @Autowired
     private IPostsRepository postsRepository;
 
+    //Post request: http://localhost:2303/posts/
     @PostMapping()
     public Post createPost(@RequestBody Post post) {
         return postsRepository.save(post);
     }
 
 
-    //Example of request: http://localhost:2303/posts/getUserPosts/abc
+    //Example of request: http://localhost:2303/posts/getUserPosts/{userId}
 
     @GetMapping("/getUserPosts/{userId}")
     public ResponseEntity<List<Post>> getUserPosts(@Valid @PathVariable("userId") String userId) {
@@ -47,6 +48,8 @@ public class PostsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    //Example of request: http://localhost:2303/posts/{id}
 
     @GetMapping(value="/{id}")
     public ResponseEntity<Post> getPost(@PathVariable("id") String id) {
