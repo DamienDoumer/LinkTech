@@ -4,83 +4,108 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.linktech.apigateway.apigateway.Secuirity.AuthResponse;
-import com.linktech.apigateway.apigateway.Secuirity.LoginRequest;
-import com.linktech.apigateway.apigateway.Services.ILoginService;
-
+import com.linktech.apigateway.apigateway.Models.AuthenticationRequest;
+import com.linktech.apigateway.apigateway.Models.AuthenticationResponse;
+import com.linktech.apigateway.apigateway.Models.SignupRequest;
+import com.linktech.apigateway.apigateway.Models.User;
+import com.linktech.apigateway.apigateway.Repositories.IUserRepository;
+import com.linktech.apigateway.apigateway.Services.JwtUtil;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 @RequestMapping("/api")
 public class LoginController {
 
     @Autowired
-    private ILoginService iLoginService;
+    IUserRepository userRepository;
+    @Autowired
+    UserDetailsService userDetailsService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private JwtUtil jwtTokenUtil;
+	@Autowired
+	PasswordEncoder encoder;
 
-    @CrossOrigin("*")
-    @PostMapping("/signin")
-    @ResponseBody
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
-        String token = iLoginService.login(loginRequest.getUsername(),loginRequest.getPassword());
-        HttpHeaders headers = new HttpHeaders();
-        List<String> headerlist = new ArrayList<>();
-        List<String> exposeList = new ArrayList<>();
-        headerlist.add("Content-Type");
-        headerlist.add(" Accept");
-        headerlist.add("X-Requested-With");
-        headerlist.add("Authorization");
-        headers.setAccessControlAllowHeaders(headerlist);
-        exposeList.add("Authorization");
-        headers.setAccessControlExposeHeaders(exposeList);
-        headers.set("Authorization", token);
-        return new ResponseEntity<AuthResponse>(new AuthResponse(token), headers, HttpStatus.CREATED);
+	@RequestMapping({ "/hello" })
+	public String firstPage() {
+		return "Hello World";
     }
-    @CrossOrigin("*")
-    @PostMapping("/signout")
-    @ResponseBody
-    public ResponseEntity<AuthResponse> logout (@RequestHeader(value="Authorization") String token) {
-        HttpHeaders headers = new HttpHeaders();
-      if (iLoginService.logout(token)) {
-          headers.remove("Authorization");
-          return new ResponseEntity<AuthResponse>(new AuthResponse("logged out"), headers, HttpStatus.CREATED);
-      }
-        return new ResponseEntity<AuthResponse>(new AuthResponse("Logout Failed"), headers, HttpStatus.NOT_MODIFIED);
-    }
+    
+	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+       
+		try {
+			    authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+			    );
 
-    /**
-     *
-     * @param token
-     * @return boolean.
-     * if request reach here it means it is a valid token.
-     */
-    @PostMapping("/valid/token")
-    @ResponseBody
-    public Boolean isValidToken (@RequestHeader(value="Authorization") String token) {
-        return true;
+                final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(authenticationRequest.getUsername());
+                final String jwt = jwtTokenUtil.generateToken(userDetails);
+    
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		}
+		catch (BadCredentialsException e) {
+			throw new Exception("Incorrect username or password", e);
+        }
+        catch (Exception e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 
+    //TODO: signup user: https://bezkoder.com/spring-boot-jwt-authentication/
+    
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) throws Exception {
+       
+		try {
+            if (userRepository.existsByEmail(signupRequest.getEmail())){
+                return ResponseEntity
+                        .badRequest()
+                        .body("Error: Email is already in use!");
+            }
 
-    @PostMapping("/signin/token")
-    @CrossOrigin("*")
-    @ResponseBody
-    public ResponseEntity<AuthResponse> createNewToken (@RequestHeader(value="Authorization") String token) {
-        String newToken = iLoginService.createNewToken(token);
-        HttpHeaders headers = new HttpHeaders();
-        List<String> headerList = new ArrayList<>();
-        List<String> exposeList = new ArrayList<>();
-        headerList.add("Content-Type");
-        headerList.add(" Accept");
-        headerList.add("X-Requested-With");
-        headerList.add("Authorization");
-        headers.setAccessControlAllowHeaders(headerList);
-        exposeList.add("Authorization");
-        headers.setAccessControlExposeHeaders(exposeList);
-        headers.set("Authorization", newToken);
-        return new ResponseEntity<AuthResponse>(new AuthResponse(newToken), headers, HttpStatus.CREATED);
+            User user = new User();
+            user.setEmail(signupRequest.getEmail());
+            user.setPassword(encoder.encode(signupRequest.getPassword()));
+            user.setName(signupRequest.getFirstName());
+            user.setLastName(signupRequest.getLastName());
+
+            user = userRepository.save(user);
+            
+			authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword())));
+            
+		    final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(user.getEmail());
+
+            final String jwt = jwtTokenUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		}
+		catch (BadCredentialsException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error creating new user");
+		}
+        catch (Exception e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 }

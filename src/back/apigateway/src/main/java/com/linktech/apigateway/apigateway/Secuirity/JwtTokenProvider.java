@@ -32,7 +32,7 @@ public class JwtTokenProvider {
     private JwtTokenRepository jwtTokenRepository;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    // private UserDetailsService userDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -90,6 +90,7 @@ public class JwtTokenProvider {
     public String getUsername(final String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
+    
     public Authentication getAuthentication(final String token) {
         //using data base: uncomment when you want to fetch data from data base
         //UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
