@@ -66,8 +66,6 @@ public class LoginController {
                     .body(e.getMessage());
         }
     }
-
-    //TODO: signup user: https://bezkoder.com/spring-boot-jwt-authentication/
     
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) throws Exception {
@@ -89,8 +87,8 @@ public class LoginController {
             
 			authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signupRequest.getEmail(),
-                encoder.encode(signupRequest.getPassword())));
-            
+                signupRequest.getPassword()));
+
 		    final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(user.getEmail());
 
