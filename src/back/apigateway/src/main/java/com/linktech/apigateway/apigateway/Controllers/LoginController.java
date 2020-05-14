@@ -36,11 +36,11 @@ public class LoginController {
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 	@Autowired
-	PasswordEncoder encoder;
-
-	@RequestMapping({ "/hello" })
-	public String firstPage() {
-		return "Hello World";
+    PasswordEncoder encoder;
+    
+	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	public ResponseEntity<?> firstPage() {
+		return ResponseEntity.ok("Hello World");
     }
     
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)

@@ -8,6 +8,7 @@ import com.linktech.userservice.userservice.models.UserModel;
 import com.linktech.userservice.userservice.repositories.IUserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,13 +28,14 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<UserModel> getUsers(){
-        return userRepository.findAll();
+    public ResponseEntity<?> getUsers(){
+        List<UserModel> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping(value = "/{id}")
     public Optional<UserModel> getUserById(@PathVariable("id") String id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id); 
     }
     
     @PutMapping(value="/{id}")

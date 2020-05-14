@@ -47,15 +47,26 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/api/authenticate", "/api/signup").permitAll().
-						anyRequest().authenticated().and().
-						exceptionHandling().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
+	public void configure(final HttpSecurity http) throws Exception{
+		http.authorizeRequests()
+			.antMatchers("/eureka/**", "/api/authenticate", "/api/signup")
+			.permitAll()
+			.antMatchers("/**")
+			.authenticated();
 	}
+
+	// @Override
+	// protected void configure(HttpSecurity httpSecurity) throws Exception {
+	// 	httpSecurity.csrf().disable()
+	// 			.authorizeRequests()
+	// 			.antMatchers("/api/authenticate", "/api/signup")
+	// 			.permitAll().
+	// 			anyRequest().authenticated().and().
+	// 			exceptionHandling().and().sessionManagement()
+    //             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                
+	// 	httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+	// }
 
 }
