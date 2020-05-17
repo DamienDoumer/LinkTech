@@ -1,5 +1,7 @@
 package com.linktech.apigateway.apigateway.Secuirity;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,35 +27,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(myUserDetailsService);
-	}
-
-	@Override
-	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
-
-	@Override
-	public void configure(final HttpSecurity http) throws Exception{
-		http.authorizeRequests()
-			.antMatchers("/eureka/**", "/api/authenticate", "/api/signup")
-			.permitAll()
-			.antMatchers("/**")
-			.authenticated();
-	}
+	// @Override
+	// public void configure(final HttpSecurity http) throws Exception{
+	// 	http.authorizeRequests()
+	// 		.antMatchers("/eureka/**", "/api/authenticate", "/api/signup")
+	// 		.permitAll()
+	// 		.antMatchers("/**")
+	// 		.authenticated();
+	// }
 
 	// @Override
 	// protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -68,5 +49,24 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	// 	httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 	// }
-
+	
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf().disable()
+                .logout().disable()
+                .formLogin().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    .anonymous()
+                .and()
+                    .exceptionHandling().authenticationEntryPoint(
+                            (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .and()
+                    .addFilterAfter(jwtRequestFilter,
+                            UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                    .antMatchers("/authservice/**", "/usersservice/**").permitAll()
+                    .anyRequest().authenticated(); 
+    }
 }

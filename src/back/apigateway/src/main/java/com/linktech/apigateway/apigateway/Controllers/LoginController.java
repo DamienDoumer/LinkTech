@@ -1,8 +1,6 @@
 package com.linktech.apigateway.apigateway.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,8 +21,8 @@ import com.linktech.apigateway.apigateway.Repositories.IUserRepository;
 import com.linktech.apigateway.apigateway.Services.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Controller
-@RequestMapping("/api")
+// @Controller
+// @RequestMapping("/api")
 public class LoginController {
 
     @Autowired
