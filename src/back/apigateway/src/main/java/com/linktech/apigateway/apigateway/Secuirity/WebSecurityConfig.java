@@ -50,6 +50,28 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// }
 	
+
+	// @Autowired
+	// public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	// 	auth.userDetailsService(myUserDetailsService);
+	// }
+
+	// @Override
+	// public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+	// 	authenticationManagerBuilder.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
+	// }
+
+	// @Bean
+	// public PasswordEncoder passwordEncoder() {
+	// 	return new BCryptPasswordEncoder();
+	// }
+
+	// @Override
+	// @Bean
+	// public AuthenticationManager authenticationManagerBean() throws Exception {
+	// 	return super.authenticationManagerBean();
+	// }
+	
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -66,7 +88,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilterAfter(jwtRequestFilter,
                             UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                    .antMatchers("/authservice/**", "/usersservice/**").permitAll()
+                    .antMatchers("/authservice/**", "/usersservice/**", "/api/**").permitAll()
                     .anyRequest().authenticated(); 
     }
 }

@@ -57,7 +57,7 @@ try {
     chain.doFilter(request, response);
 } catch (Exception e) {
     //TODO: handle exception
-    System.out.println(e.getMessage());
+    System.out.println("######### "+e.getMessage());
 }
     }
 

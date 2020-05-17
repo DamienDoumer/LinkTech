@@ -22,7 +22,7 @@ import com.linktech.apigateway.apigateway.Services.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 // @Controller
-// @RequestMapping("/api")
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired
