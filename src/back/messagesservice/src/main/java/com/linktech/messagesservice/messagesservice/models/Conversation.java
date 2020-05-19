@@ -11,7 +11,6 @@ public class Conversation {
     private String user1Id;
     private String user2Id;
 
-
     public Conversation() {
     }
 

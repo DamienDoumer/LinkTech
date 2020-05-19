@@ -8,7 +8,8 @@ public class Message {
     private String id;
     private String text;
     private Date creationDate;
-
+    private String senderId;
+    private String receiverId;
 
     public Message() {
     }
@@ -18,6 +19,24 @@ public class Message {
         this.text = text;
         this.creationDate = creationDate;
     }
+
+
+    public String getSenderId() {
+        return this.senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getReceiverId() {
+        return this.receiverId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
+    }
+
 
     public String getId() {
         return this.id;

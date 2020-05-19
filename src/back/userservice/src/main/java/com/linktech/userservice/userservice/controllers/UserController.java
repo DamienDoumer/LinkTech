@@ -8,6 +8,7 @@ import com.linktech.userservice.userservice.models.UserModel;
 import com.linktech.userservice.userservice.repositories.IUserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,11 +62,42 @@ public class UserController {
             return userRepository.findAll();
     }
 
-    @PutMapping(value = "/banUser{id}")
+    @PutMapping(value = "/banUser/{id}")
     public UserModel banUser(@PathVariable("id") String id, @RequestBody UserModel user)
     {
+        user.setIsBanned(true);
         user.setId(id);
         return userRepository.save(user);
+    }
+
+    @PutMapping(value = "/followInstitution")
+    public ResponseEntity followInstitution(@PathVariable("institutionId") String institutionId, @RequestBody UserModel user) 
+    {
+        UserModel userGotten = userRepository.findById(user.getId()).get();
+
+        if (userGotten != null)
+        {
+            userGotten.getInstitutionsFollowing().add(institutionId);
+            userRepository.save(userGotten);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
+    @PutMapping(value = "/unFollowInstitution")
+    public ResponseEntity unFollowInstitution(@PathVariable("institutionId") String institutionId, @RequestBody UserModel user) 
+    {
+        UserModel userGotten = userRepository.findById(user.getId()).get();
+
+        if (userGotten != null)
+        {
+            userGotten.getInstitutionsFollowing().remove(institutionId);
+            userRepository.save(userGotten);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/followUser")

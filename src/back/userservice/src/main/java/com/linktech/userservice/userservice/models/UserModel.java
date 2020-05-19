@@ -13,6 +13,8 @@ public class UserModel extends BaseModel {
     ArrayList<UserActivityModel> activities;
     ArrayList<String> followers;
     ArrayList<String> following;
+    //THe institutions which the user is following
+    ArrayList<String> institutionsFollowing;
     boolean isBanned;
 
     public UserModel() {
@@ -24,7 +26,22 @@ public class UserModel extends BaseModel {
         this.activities = activities;
         this.firstName = firstName;
         this.secondName = secondName;
+        institutionsFollowing = new ArrayList<>();
     }
+
+
+    public ArrayList<String> getInstitutionsFollowing() {
+        return this.institutionsFollowing;
+    }
+
+    public void setInstitutionsFollowing(ArrayList<String> institutionsFollowing) {
+        this.institutionsFollowing = institutionsFollowing;
+    }
+
+    public boolean isIsBanned() {
+        return this.isBanned;
+    }
+
 
     public ArrayList<String> getFollowers(){
         return this.followers;
