@@ -2,6 +2,8 @@ package com.linktech.apigateway.apigateway.Secuirity;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.linktech.apigateway.apigateway.Models.Role;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +52,12 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// }
 	
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -66,7 +74,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilterAfter(jwtRequestFilter,
                             UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                    .antMatchers("/authservice/**").permitAll()
-                    .anyRequest().authenticated(); 
+					.antMatchers("/authservice/**").permitAll()
+					.antMatchers(HttpMethod.GET, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/usersservice/users/banUser").hasAuthority(Role.ADMIN_ROLE)
+                    .anyRequest().authenticated();
     }
 }

@@ -1,14 +1,27 @@
 package com.linktech.apigateway.apigateway.Models;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Role {
-    private Integer id;
+   
+    static public final String ADMIN_ROLE = "ADMIN";
+    static public final String USER_ROLE = "USER";
+
+    @Id
+    private String id;
+    @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
+    
     private String role;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -20,16 +33,4 @@ public class Role {
         this.role = role;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", role='" + role + '\'' +
-                '}';
-    }
 }
