@@ -36,6 +36,7 @@ public class MongoUserDetails implements UserDetails
         this.grantedAuthorities = grantedAuthorities;
     }
     
+    
     public void setUsername(String username) {
         this.username = username;
     }
@@ -154,7 +155,10 @@ public class MongoUserDetails implements UserDetails
     }
     private List<GrantedAuthority> grantedAuthorities;
 
-    public MongoUserDetails(String username, String password,Integer active, boolean isLocked, boolean isExpired, boolean isEnabled) {
+    public MongoUserDetails(String username, String password,Integer active, boolean isLocked, boolean isExpired,
+         boolean isEnabled, List<GrantedAuthority> authorities) {
+        
+        this.setGrantedAuthorities(authorities);
         this.username = username;
         this.password = password;
         this.active = active;

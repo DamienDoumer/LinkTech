@@ -11,14 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import com.linktech.apigateway.apigateway.Models.AuthenticationRequest;
 import com.linktech.apigateway.apigateway.Models.AuthenticationResponse;
+import com.linktech.apigateway.apigateway.Models.Role;
 import com.linktech.apigateway.apigateway.Models.SignupRequest;
 import com.linktech.apigateway.apigateway.Models.User;
+import com.linktech.apigateway.apigateway.Repositories.IRoleRepository;
 import com.linktech.apigateway.apigateway.Repositories.IUserRepository;
 import com.linktech.apigateway.apigateway.Services.JwtUtil;
+// import com.netflix.discovery.converters.Auto;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
@@ -35,6 +41,8 @@ public class LoginController {
 	private JwtUtil jwtTokenUtil;
 	@Autowired
     PasswordEncoder encoder;
+    @Autowired
+    IRoleRepository roleRepository;
     
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public ResponseEntity<?> firstPage() {
@@ -65,6 +73,24 @@ public class LoginController {
         }
     }
     
+    @RequestMapping(value = "/addToAdminRole", method = RequestMethod.POST)
+    public ResponseEntity<?> addToAdmin(@RequestBody String email) throws Exception {
+    
+        if (!userRepository.existsByEmail(email)){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: User doesnot exist!");
+        }
+
+        User user = userRepository.findByEmail(email);
+        
+        Role userRole = roleRepository.findByRole(Role.ADMIN_ROLE);
+        user.setRole(new HashSet<>(Arrays.asList(userRole)));
+        user = userRepository.save(user);
+
+        return ResponseEntity.ok("Added as admin");
+    }
+
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) throws Exception {
        
@@ -80,6 +106,9 @@ public class LoginController {
             user.setPassword(encoder.encode(signupRequest.getPassword()));
             user.setName(signupRequest.getFirstName());
             user.setLastName(signupRequest.getLastName());
+
+            Role userRole = roleRepository.findByRole(Role.USER_ROLE);
+            user.setRole(new HashSet<>(Arrays.asList(userRole)));
 
             user = userRepository.save(user);
             
