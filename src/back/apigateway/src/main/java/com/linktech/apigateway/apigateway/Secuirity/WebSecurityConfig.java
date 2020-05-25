@@ -78,6 +78,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers(HttpMethod.GET, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
 					.antMatchers(HttpMethod.DELETE, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
 					.antMatchers(HttpMethod.PUT, "/usersservice/users/banUser").hasAuthority(Role.ADMIN_ROLE)
-                    .anyRequest().authenticated();
+					.antMatchers(HttpMethod.PUT, "/institutionsservice/institutions").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers(HttpMethod.DELETE, "/institutionsservice/institutions").hasAuthority(Role.ADMIN_ROLE)
+					.anyRequest().authenticated();
     }
 }
