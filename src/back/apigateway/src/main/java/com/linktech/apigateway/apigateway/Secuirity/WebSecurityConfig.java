@@ -76,6 +76,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 					.antMatchers("/authservice/**").permitAll()
 					.antMatchers(HttpMethod.GET, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers(HttpMethod.DELETE, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
 					.antMatchers("/usersservice/users/banUser").hasAuthority(Role.ADMIN_ROLE)
                     .anyRequest().authenticated();
     }

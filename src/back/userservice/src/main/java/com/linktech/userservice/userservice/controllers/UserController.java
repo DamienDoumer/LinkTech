@@ -26,7 +26,6 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<?> createUser(@RequestBody UserModel user){
         try{
-
             UserModel newUser = userRepository.save(user);
             return ResponseEntity.ok(newUser);
         } catch (Exception e){
@@ -47,7 +46,7 @@ public class UserController {
         return userRepository.findById(id); 
     }
     
-    @PutMapping(value="/{id}")
+    @PutMapping(value="/updateUser/{id}")
     public UserModel updateUser(@PathVariable String id, @RequestBody UserModel user) {
         
         user.setId(id);
@@ -78,7 +77,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    @PutMapping(value = "/followInstitution")
+    @PutMapping(value = "/followInstitution/{institutionId}")
     public ResponseEntity followInstitution(@PathVariable("institutionId") String institutionId, @RequestBody UserModel user) 
     {
         UserModel userGotten = userRepository.findById(user.getId()).get();
@@ -93,7 +92,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
-    @PutMapping(value = "/unFollowInstitution")
+    @PutMapping(value = "/unFollowInstitution/{institutionId}")
     public ResponseEntity unFollowInstitution(@PathVariable("institutionId") String institutionId, @RequestBody UserModel user) 
     {
         UserModel userGotten = userRepository.findById(user.getId()).get();
@@ -108,9 +107,9 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/followUser")
-    public ArrayList<String> followUser(@RequestParam("currentUserId") String currentUserId, 
-        @RequestParam("followingUserId") String followingUserId)
+    @PutMapping(value = "/followUser/{currentUserId}/{followingUserId}")
+    public ArrayList<String> followUser(@PathVariable("currentUserId") String currentUserId, 
+        @PathVariable("followingUserId") String followingUserId)
     {
         UserModel currentUser = userRepository.findById(currentUserId).get();
         UserModel followingUser = userRepository.findById(followingUserId).get();

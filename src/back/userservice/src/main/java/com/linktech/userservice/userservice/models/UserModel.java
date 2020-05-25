@@ -18,6 +18,9 @@ public class UserModel extends BaseModel {
     boolean isBanned;
 
     public UserModel() {
+        followers = new ArrayList<>();
+        following = new ArrayList<>();
+        institutionsFollowing = new ArrayList<>();
     }
 
     public UserModel(boolean isAdmin, String firstName, String secondName, String email, ArrayList<UserActivityModel> activities) {
