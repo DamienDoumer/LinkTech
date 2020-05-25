@@ -10,16 +10,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import feign.Feign;
+import feign.gson.GsonDecoder;
+import feign.gson.GsonEncoder;
+import feign.okhttp.OkHttpClient;
+import feign.slf4j.Slf4jLogger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import com.linktech.apigateway.apigateway.ApiClients.UserClient;
 import com.linktech.apigateway.apigateway.Models.AuthenticationRequest;
 import com.linktech.apigateway.apigateway.Models.AuthenticationResponse;
 import com.linktech.apigateway.apigateway.Models.Role;
 import com.linktech.apigateway.apigateway.Models.SignupRequest;
 import com.linktech.apigateway.apigateway.Models.User;
+import com.linktech.apigateway.apigateway.Models.ExternalModels.UserModel;
 import com.linktech.apigateway.apigateway.Repositories.IRoleRepository;
 import com.linktech.apigateway.apigateway.Repositories.IUserRepository;
 import com.linktech.apigateway.apigateway.Services.JwtUtil;
@@ -101,6 +109,13 @@ public class LoginController {
                         .body("Error: Email is already in use!");
             }
 
+            UserClient userClient = Feign.builder()
+                .client(new OkHttpClient())
+                .encoder(new GsonEncoder())
+                .decoder(new GsonDecoder())
+                .logger(new Slf4jLogger(UserClient.class))
+                .target(UserClient.class, "http://localhost:2202/users");
+
             User user = new User();
             user.setEmail(signupRequest.getEmail());
             user.setPassword(encoder.encode(signupRequest.getPassword()));
@@ -120,6 +135,14 @@ public class LoginController {
                 .loadUserByUsername(user.getEmail());
 
             final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+            UserModel userServiceUser = new UserModel();
+            userServiceUser.email = user.getEmail();
+            userServiceUser.firstName = user.getName();
+            userServiceUser.secondName = user.getLastName();
+
+            UserModel userm = userClient.Create(userServiceUser);
+
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
 		}
 		catch (BadCredentialsException e) {

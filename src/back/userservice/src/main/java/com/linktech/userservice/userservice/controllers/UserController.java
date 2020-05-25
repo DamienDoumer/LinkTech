@@ -24,8 +24,16 @@ public class UserController {
     private IUserRepository userRepository;
     
     @PostMapping()
-    public UserModel createUser(@RequestBody UserModel user){
-        return userRepository.save(user);
+    public ResponseEntity<?> createUser(@RequestBody UserModel user){
+        try{
+
+            UserModel newUser = userRepository.save(user);
+            return ResponseEntity.ok(newUser);
+        } catch (Exception e){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error creating new user"+e.getMessage());
+        }
     }
 
     @GetMapping()
