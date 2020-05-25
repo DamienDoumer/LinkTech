@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface IPostsRepository extends MongoRepository<Post, String> {
 
     List<Post> findByUserId(String userId);
+    List<Post> findByInstitutionId(String institutionId);
 }

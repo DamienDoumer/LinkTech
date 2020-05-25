@@ -127,6 +127,26 @@ public class UserController {
         return followingUser.getFollowing();
     }
 
+    @PutMapping(value = "/unFollowUser/{currentUserId}/{followingUserId}")
+    public ArrayList<String> unFollowUser(@PathVariable("currentUserId") String currentUserId, 
+        @PathVariable("followingUserId") String followingUserId)
+    {
+        UserModel currentUser = userRepository.findById(currentUserId).get();
+        UserModel followingUser = userRepository.findById(followingUserId).get();
+
+        ArrayList<String> following = currentUser.getFollowing();
+        following.remove(followingUserId);
+        currentUser.setFollowing(following);
+        ArrayList<String> followers = followingUser.getFollowers();
+        followers.remove(currentUserId);
+        followingUser.setFollowers(followers);
+
+        userRepository.save(currentUser);
+        userRepository.save(followingUser);
+
+        return followingUser.getFollowing();
+    }
+
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") String id)
     {
