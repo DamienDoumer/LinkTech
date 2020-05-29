@@ -6,6 +6,8 @@
 # To run the back-end
 - Enter the back folder
 - Run docker-compse up
+- If the jar files are not present, run the build.sh file which will create the jar files.
+- Copy the docker files in the target forlder and change their names to Dockerfile
 
 # IF and only if the .jar files are not present in the target folder of the different services, Do these: 
 
