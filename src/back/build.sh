@@ -1,4 +1,5 @@
 bash ./apigateway/build.sh 
+bash ./authservice/build.sh 
 bash ./postsservice/build.sh 
 bash ./userservice/build.sh 
 bash ./messagesservice/build.sh 

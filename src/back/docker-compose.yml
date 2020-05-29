@@ -11,7 +11,12 @@ services:
     links:
     - mongo
     - authservice
+    - institutionsservice
+    - messagesservice
+    - postsservice
+    - userservice
     entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+
   authservice:
       image: linktech/authservice
       build: 
@@ -22,6 +27,51 @@ services:
       links:
       - mongo
       entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+      
+  institutionsservice:
+    image: linktech/institutionsservice
+    build: 
+      context: .
+      dockerfile: ./institutionsservice/target/DOCKERFILE
+    ports:
+    - 3303:3303
+    links:
+    - mongo
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+    
+  messagesservice:
+    image: linktech/messagesservice
+    build: 
+      context: .
+      dockerfile: ./messagesservice/target/DOCKERFILE
+    ports:
+    - 3303:3303
+    links:
+    - mongo
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+
+  postsservice:
+    image: linktech/postsservice
+    build: 
+      context: .
+      dockerfile: ./postsservice/target/DOCKERFILE
+    ports:
+    - 3303:3303
+    links:
+    - mongo
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+
+  userservice:
+    image: linktech/userservice
+    build: 
+      context: .
+      dockerfile: ./userservice/target/DOCKERFILE
+    ports:
+    - 3303:3303
+    links:
+    - mongo
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
+
   mongo:
     image: mongo:3.2.4
     ports:
