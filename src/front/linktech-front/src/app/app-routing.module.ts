@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'secret-random-number',
-    loadChildren: './home/home.module#HomeModule',
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
     canActivate: [HomeGuard],
     canLoad: [HomeGuard]
   }
