@@ -1,5 +1,7 @@
 package com.linktech.apigateway.apigateway;
 
+import java.util.Collections;
+
 import com.linktech.apigateway.apigateway.Models.Role;
 import com.linktech.apigateway.apigateway.Models.User;
 import com.linktech.apigateway.apigateway.Repositories.IRoleRepository;
@@ -10,6 +12,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -18,6 +23,18 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 	
+    @Bean
+    public CorsFilter corsFilter() {
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    final CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(Collections.singletonList("*"));
+    config.setAllowedHeaders(Collections.singletonList("*"));
+    config.setAllowedMethods(Collections.singletonList("*"));
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
+}
+
     @Bean
 	CommandLineRunner init(IRoleRepository roleRepository, IUserRepository userRepository, 
 		UsersService usersService){
