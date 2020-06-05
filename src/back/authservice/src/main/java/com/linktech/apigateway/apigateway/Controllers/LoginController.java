@@ -35,6 +35,7 @@ import com.linktech.apigateway.apigateway.Services.JwtUtil;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 @RequestMapping("/auth")
 public class LoginController {
