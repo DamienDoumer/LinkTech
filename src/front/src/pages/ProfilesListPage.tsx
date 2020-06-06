@@ -6,14 +6,13 @@ import {Link} from "react-router-dom";
 
 import {config} from "../config";
 import {AuthContext} from "../contexts/AuthContext";
-import {InstitutionCreateComponent} from "../components/Institution/InstitutionCreateComponent";
-import {InstitutionModel} from "../models/InstitutionModel";
+import {ProfileModel} from "../models/ProfileModel";
 import {MainLayout} from "../layouts/MainLayout";
 
-export const InstitutionsListPage: FunctionComponent = () => {
+export const ProfilesListPage: FunctionComponent = () => {
     const context = useContext(AuthContext);
 
-    const [data, setData] = useState<InstitutionModel[]>([]);
+    const [data, setData] = useState<ProfileModel[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -23,17 +22,18 @@ export const InstitutionsListPage: FunctionComponent = () => {
         setLoading(true);
 
         axios({
-            url: config.institutionsServiceUrl,
+            url: config.usersServiceUrl,
             method: 'GET',
             headers: {Authorization: `Bearer ${context.state.token}`}
         }).then((response) => {
-            setData(response.data.map((e: any): InstitutionModel => ({
+            setData(response.data.map((e: any): ProfileModel => ({
                 id: e.id,
-                name: e.name,
-                type: e.type,
-                location: e.location,
-                country: e.countryName,
-                sector: e.sector
+                firstname: e.firstName,
+                lastname: e.secondName,
+                email: e.email,
+                following: e.following,
+                followers: e.followers,
+                institutionsFollowing: e.institutionsFollowing,
             })));
             setLoading(false)
         }).catch((reason) => {
@@ -49,19 +49,15 @@ export const InstitutionsListPage: FunctionComponent = () => {
 
     return (
         <MainLayout>
-            <h1>Institutions List</h1>
-            <InstitutionCreateComponent/>
+            <h1>Profiles List</h1>
             <Button onClick={() => {
                 fetchData()
             }}>Refetch</Button>
             <List
                 dataSource={data}
-                renderItem={institution => (
+                renderItem={profile => (
                     <List.Item>
-                        <h2><Link to={`/institution/${institution.id}`}>{institution.name}</Link></h2>
-                        <p>{institution.type}</p>
-                        <p>{institution.country}, {institution.location}</p>
-                        <p>{institution.sector}</p>
+                        <h2><Link to={`/profile/${profile.id}`}>{profile.firstname} {profile.lastname}</Link></h2>
                     </List.Item>
                 )}
             />
