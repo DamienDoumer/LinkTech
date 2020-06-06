@@ -21,7 +21,8 @@ import com.linktech.apigateway.apigateway.Repositories.IUserRepository;
 import com.linktech.apigateway.apigateway.Services.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-// @Controller
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@Controller
 @RequestMapping("/api")
 public class LoginController {
 

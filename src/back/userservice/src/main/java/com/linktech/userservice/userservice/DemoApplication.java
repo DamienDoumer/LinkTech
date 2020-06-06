@@ -22,6 +22,7 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 	
+
     @Bean
     public CorsFilter corsFilter() {
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -31,8 +32,7 @@ public class DemoApplication {
     config.setAllowedHeaders(Collections.singletonList("*"));
     config.setAllowedMethods(Collections.singletonList("*"));
     source.registerCorsConfiguration("/**", config);
-    return new CorsFilter(source);
-}
+    return new CorsFilter(source);}
 
     @Bean
 	CommandLineRunner init(IUserRepository userRepository){
