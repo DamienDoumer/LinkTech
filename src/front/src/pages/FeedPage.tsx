@@ -9,6 +9,7 @@ export const FeedPage: FunctionComponent = () => {
 
     return (
         <MainLayout>
+            <h1>Fake Data...</h1>
             <PostFeedComponent posts={posts}/>
         </MainLayout>
     );

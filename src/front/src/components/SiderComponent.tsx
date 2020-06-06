@@ -12,7 +12,7 @@ type SiderComponentType = {
 
 export const SiderComponent: FunctionComponent<SiderComponentType> = ({collapsed}) => {
     const authContext = useContext(AuthContext);
-    const authenticated = useMemo(() => authContext.token !== undefined, [authContext]);
+    const authenticated = useMemo(() => authContext.state.token !== undefined, [authContext.state.token]);
     const {pathname} = useLocation();
     const routeMatched = useMemo(() => {
         let routeMatched = 0;
@@ -33,7 +33,7 @@ export const SiderComponent: FunctionComponent<SiderComponentType> = ({collapsed
                     .filter((r) => authenticated ? (r.auth === "authenticated") : (r.auth === "not-authenticated"))
                     .map((r, i) => (
                         <Menu.Item key={i}>
-                            <Link to={r.path[0]}>
+                            <Link to={r.path}>
                                 {r.icon()}
                                 <span>{r.name}</span>
                             </Link>

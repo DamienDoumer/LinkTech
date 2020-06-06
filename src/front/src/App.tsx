@@ -1,11 +1,11 @@
 import React, {FunctionComponent} from 'react';
 
 import {Router} from "./Router";
-import {AuthContext, initialContext} from "./contexts/AuthContext";
+import {AuthContextProvider} from "./contexts/AuthContext";
 import './App.css';
 
 export const App: FunctionComponent = () => (
-    <AuthContext.Provider value={initialContext}>
+    <AuthContextProvider>
         <Router />
-    </AuthContext.Provider>
+    </AuthContextProvider>
 );

@@ -2,5 +2,6 @@ const apiUrl = 'http://localhost:8080';
 
 export const config = {
     apiUrl: apiUrl,
-    authServiceUrl: apiUrl + '/auth',
+    authServiceUrl: 'http://localhost:3303/auth',
+    institutionsServiceUrl: 'http://localhost:2002/institutions',
 };

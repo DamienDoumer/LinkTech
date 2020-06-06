@@ -5,16 +5,15 @@ import {HomeOutlined, UserOutlined} from "@ant-design/icons/lib";
 
 import {LoginPage} from "./pages/LoginPage";
 import {FeedPage} from "./pages/FeedPage";
-import {ProfilePage} from "./pages/ProfilePage";
-import {PostPage} from "./pages/PostPage";
 import {AuthContext} from "./contexts/AuthContext";
 import {RegisterPage} from "./pages/RegisterPage";
+import {InstitutionsListPage} from "./pages/InstitutionsListPage";
 
 export type RouteType = {
     icon: () => ReactElement,
     component: () => ReactElement,
     name: string,
-    path: string[],
+    path: string,
     onSidebar: boolean,
     auth: "authenticated" | "not-authenticated",
 }
@@ -24,7 +23,7 @@ export const routes: RouteType[] = [
         icon: () => <HomeOutlined/>,
         component: () => <LoginPage/>,
         name: 'Login',
-        path: ['/login'],
+        path: '/login',
         onSidebar: true,
         auth: "not-authenticated",
     },
@@ -32,7 +31,7 @@ export const routes: RouteType[] = [
         icon: () => <HomeOutlined/>,
         component: () => <RegisterPage/>,
         name: 'Register',
-        path: ['/register'],
+        path: '/register',
         onSidebar: true,
         auth: "not-authenticated",
     },
@@ -40,56 +39,44 @@ export const routes: RouteType[] = [
         icon: () => <HomeOutlined/>,
         component: () => <FeedPage/>,
         name: 'Home',
-        path: ['/feed', '/'],
+        path: '/',
         onSidebar: true,
         auth: "authenticated",
     },
     {
         icon: () => <UserOutlined/>,
-        component: () => <ProfilePage/>,
-        name: 'Profile',
-        path: ['/profile', '/profile/:userId'],
+        component: () => <InstitutionsListPage/>,
+        name: 'Institutions',
+        path: '/institutions',
         onSidebar: true,
         auth: "authenticated",
     },
-    {
-        icon: () => <span/>,
-        component: () => <PostPage/>,
-        name: 'Post',
-        path: ['/post/:postId'],
-        onSidebar: false,
-        auth: "authenticated",
-    }
 ];
 
-const NotAuthenticatedRoute: FunctionComponent<{ route: RouteType, path: string, authenticated: boolean }> = ({route, path, authenticated}) => {
+const NotAuthenticatedRoute: FunctionComponent<{ route: RouteType, authenticated: boolean }> = ({route, authenticated}) => {
     if (authenticated) {
-        return (<Route exact path={path}><Redirect to="/"/></Route>);
+        return (<Route exact path={route.path}><Redirect to="/"/></Route>);
     }
-    return (<Route exact path={path} component={route.component}/>);
+    return (<Route exact path={route.path} component={route.component}/>);
 }
 
-const AuthenticatedRoute: FunctionComponent<{ route: RouteType, path: string, authenticated: boolean }> = ({route, path, authenticated}) => {
+const AuthenticatedRoute: FunctionComponent<{ route: RouteType, authenticated: boolean }> = ({route, authenticated}) => {
     if (!authenticated) {
-        return (<Route exact path={path}><Redirect to="/login"/></Route>);
+        return (<Route exact path={route.path}><Redirect to="/login"/></Route>);
     }
-    return (<Route exact path={path} component={route.component}/>);
+    return (<Route exact path={route.path} component={route.component}/>);
 }
 
 export const Router = () => {
     const authContext = useContext(AuthContext);
 
-    const authenticated = useMemo(() => authContext.token !== undefined, [authContext]);
+    const authenticated = useMemo(() => authContext.state.token !== undefined, [authContext.state.token]);
 
     return (
         <BrowserRouter>
             <Switch>
                 {routes.map((r) => (
-                        r.path.map((p) => (r.auth === "not-authenticated")
-                            ? (<NotAuthenticatedRoute key={r.name + "::" + p} path={p} route={r}
-                                                      authenticated={authenticated}/>)
-                            : (<AuthenticatedRoute key={r.name + "::" + p} path={p} route={r}
-                                                   authenticated={authenticated}/>))
+                        <Route exact path={r.path} component={r.component}/>
                     )
                 )}
                 <Route path="*">

@@ -1,25 +1,27 @@
-import React, {FunctionComponent, useState} from "react";
+import React, {FunctionComponent, useContext, useState} from "react";
 
 import axios from "axios";
 import {Button, Checkbox, Form, Input} from 'antd';
 
 import {config} from "../../config";
+import {AuthContext} from "../../contexts/AuthContext";
 
 export const LoginComponent: FunctionComponent = () => {
+    const authContext = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(undefined);
 
-    const login = (username: string, password: string, remember: boolean) => {
+    const login = (email: string, password: string, remember: boolean) => {
         setLoading(true);
         axios({
-            url: config.authServiceUrl,
+            url: config.authServiceUrl + '/authenticate',
             method: "POST",
-            data: {username, password},
+            data: {username: email, password},
             withCredentials: true,
         })
             .then((response) => {
-                console.log(response);
-                setLoading(false);
+                authContext.login(email, response.data.jwt);
+                // setLoading(false);
             })
             .catch((error) => {
                 setLoading(false);
@@ -28,7 +30,7 @@ export const LoginComponent: FunctionComponent = () => {
     }
 
     const onFinish = (values: any) => {
-        login(values.username, values.password, values.remember);
+        login(values.email, values.password, values.remember);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -36,7 +38,7 @@ export const LoginComponent: FunctionComponent = () => {
     };
 
     if (loading) return <p>Loading...</p>
-    if (error) return <p>Error!</p>
+    if (error) return <p>Error! <code>{JSON.stringify(error)}</code></p>
 
     return (
         <Form
@@ -46,9 +48,9 @@ export const LoginComponent: FunctionComponent = () => {
             onFinishFailed={onFinishFailed}
         >
             <Form.Item
-                label="Username"
-                name="username"
-                rules={[{required: true, message: 'Please input your username!'}]}
+                label="Email"
+                name="email"
+                rules={[{required: true, message: 'Please input your email!'}]}
             >
                 <Input/>
             </Form.Item>
