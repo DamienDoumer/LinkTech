@@ -1,0 +1,56 @@
+section.main-layout {
+  aside {
+    overflow: auto;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+
+    &.collapsed {
+      width: 0 !important;
+    }
+
+    div.logo {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 16px;
+
+      h1 {
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 26px;
+      }
+    }
+  }
+
+  section {
+    margin-left: 200px;
+    transition: all 0.2s;
+
+    &.no-margin {
+      margin-left: 0;
+    }
+
+    header {
+      background: #fff;
+      padding: 0;
+    }
+
+    main {
+      margin: 24px 16px 0;
+      overflow: initial;
+
+      & > div {
+        padding: 24px;
+      }
+    }
+
+    footer {
+      text-align: center;
+    }
+  }
+}
+
+body {
+  background: #f0f2f5;
+}

@@ -4,8 +4,7 @@ services:
   apigatewayservice:
     image: linktech/apigatewayservice
     build: 
-      context: .
-      dockerfile: ./apigateway/target/DOCKERFILE
+      context: ./apigateway/target
     ports:
     - 8080:8080
     links:
@@ -20,8 +19,7 @@ services:
   authservice:
       image: linktech/authservice
       build: 
-        context: .
-        dockerfile: ./authservice/target/DOCKERFILE
+        context: ./authservice/target/
       ports:
       - 3303:3303
       links:
@@ -31,10 +29,9 @@ services:
   institutionsservice:
     image: linktech/institutionsservice
     build: 
-      context: .
-      dockerfile: ./institutionsservice/target/DOCKERFILE
+      context: ./institutionsservice/target/
     ports:
-    - 3303:3303
+    - 2002:2002
     links:
     - mongo
     entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
@@ -42,10 +39,9 @@ services:
   messagesservice:
     image: linktech/messagesservice
     build: 
-      context: .
-      dockerfile: ./messagesservice/target/DOCKERFILE
+      context: ./messagesservice/target/
     ports:
-    - 3303:3303
+    - 2212:2212
     links:
     - mongo
     entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
@@ -53,10 +49,9 @@ services:
   postsservice:
     image: linktech/postsservice
     build: 
-      context: .
-      dockerfile: ./postsservice/target/DOCKERFILE
+      context: ./postsservice/target/
     ports:
-    - 3303:3303
+    - 2303:2303
     links:
     - mongo
     entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
@@ -64,10 +59,9 @@ services:
   userservice:
     image: linktech/userservice
     build: 
-      context: .
-      dockerfile: ./userservice/target/DOCKERFILE
+      context: ./userservice/target/
     ports:
-    - 3303:3303
+    - 2202:2202
     links:
     - mongo
     entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
