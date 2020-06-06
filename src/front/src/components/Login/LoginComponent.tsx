@@ -41,37 +41,42 @@ export const LoginComponent: FunctionComponent = () => {
     if (error) return <p>Error! <code>{JSON.stringify(error)}</code></p>
 
     return (
-        <Form
-            name="basic"
-            initialValues={{remember: true}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <Form.Item
-                label="Email"
-                name="email"
-                rules={[{required: true, message: 'Please input your email!'}]}
+        <>
+            <Form
+                name="basic"
+                initialValues={{remember: true}}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
             >
-                <Input/>
-            </Form.Item>
+                <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[{required: true, message: 'Please input your email!'}]}
+                >
+                    <Input/>
+                </Form.Item>
 
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[{required: true, message: 'Please input your password!'}]}
-            >
-                <Input.Password/>
-            </Form.Item>
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{required: true, message: 'Please input your password!'}]}
+                >
+                    <Input.Password/>
+                </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
-            </Form.Item>
+                <Form.Item name="remember" valuePropName="checked">
+                    <Checkbox>Remember me</Checkbox>
+                </Form.Item>
 
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+            <Button onClick={() => {
+                login("MarkAngelo@user.com", "password", false)
+            }}>Connect with MarkAngelo@user.com</Button>
+        </>
     );
 };

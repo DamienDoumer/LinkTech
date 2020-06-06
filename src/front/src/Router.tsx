@@ -8,6 +8,7 @@ import {FeedPage} from "./pages/FeedPage";
 import {AuthContext} from "./contexts/AuthContext";
 import {RegisterPage} from "./pages/RegisterPage";
 import {InstitutionsListPage} from "./pages/InstitutionsListPage";
+import {InstitutionPage} from "./pages/InstitutionPage";
 
 export type RouteType = {
     icon: () => ReactElement,
@@ -49,6 +50,14 @@ export const routes: RouteType[] = [
         name: 'Institutions',
         path: '/institutions',
         onSidebar: true,
+        auth: "authenticated",
+    },
+    {
+        icon: () => <UserOutlined/>,
+        component: () => <InstitutionPage/>,
+        name: 'Institution',
+        path: '/institution/:institutionId',
+        onSidebar: false,
         auth: "authenticated",
     },
 ];
