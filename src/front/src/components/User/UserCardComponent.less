@@ -1,0 +1,39 @@
+@import "../../antd.customize.less";
+
+.profile-card {
+  & > div.ant-card-body {
+    display: flex;
+
+    text-align: center;
+
+    & > div.ant-space {
+      width: 100%;
+
+      span.profile-card-name {
+        font-size: @heading-2-size;
+        color: @primary-color;
+      }
+
+      span.profile-card-title {
+        font-size: @heading-3-size;
+      }
+
+      span.profile-card-meta {
+        font-size: @heading-4-size;
+        color: @text-color-secondary;
+      }
+    }
+  }
+
+  & > ul.ant-card-actions > li:hover {
+    span.ant-typography:not(.ant-typography-danger) {
+      color: @primary-5;
+      transition: color 0.3s;
+    }
+
+    span.ant-typography.ant-typography-danger {
+      color: @red-7;
+      transition: color 0.3s;
+    }
+  }
+}
