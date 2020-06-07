@@ -42,7 +42,6 @@ public class UsersService implements UserDetailsService {
         return userDetails; 
     }
 
-    
     public void saveAdminUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
@@ -61,3 +60,4 @@ public class UsersService implements UserDetailsService {
         return grantedAuthorities;
     }
 }
+

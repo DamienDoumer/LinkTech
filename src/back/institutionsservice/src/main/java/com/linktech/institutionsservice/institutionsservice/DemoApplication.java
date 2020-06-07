@@ -1,6 +1,6 @@
 package com.linktech.institutionsservice.institutionsservice;
 
-
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -10,13 +10,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
 
+import com.linktech.institutionsservice.institutionsservice.models.Institution;
+import com.linktech.institutionsservice.institutionsservice.repositories.IInstitutionRepository;
+
 // @EnableEurekaClient
 @SpringBootApplication
 public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
-
+    
     @Bean
     public CorsFilter corsFilter() {
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

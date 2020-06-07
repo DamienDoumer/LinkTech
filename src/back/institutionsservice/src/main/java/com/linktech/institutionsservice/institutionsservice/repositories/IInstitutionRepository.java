@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @Repository
 public interface IInstitutionRepository extends MongoRepository<Institution, String> {
     List<Institution> findBySector(String sector);
+    Institution findByName(String name);
     List<Institution> findByCountryName(String countryName);
     List<Institution> findByCountryNameAndSector(String countryName, String sector);
 }

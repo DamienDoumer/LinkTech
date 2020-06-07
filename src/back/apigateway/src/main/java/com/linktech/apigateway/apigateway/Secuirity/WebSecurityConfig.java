@@ -58,6 +58,22 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(myUserDetailsService);
+	}
+
+	@Override
+	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
+	}
+
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -71,15 +87,17 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(
                             (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
-                    .addFilterAfter(jwtRequestFilter,
+                    .addFilterBefore(jwtRequestFilter,
                             UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
 					.antMatchers("/authservice/**").permitAll()
-					.antMatchers(HttpMethod.GET, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
-					.antMatchers(HttpMethod.DELETE, "/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
-					.antMatchers(HttpMethod.PUT, "/usersservice/users/banUser").hasAuthority(Role.ADMIN_ROLE)
-					.antMatchers(HttpMethod.PUT, "/institutionsservice/institutions").hasAuthority(Role.ADMIN_ROLE)
-					.antMatchers(HttpMethod.DELETE, "/institutionsservice/institutions").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/authservice/auth/addToAdminRole")
+					.hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/usersservice/users").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/usersservice/users/banUser").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/institutionsservice/institutions").hasAuthority(Role.ADMIN_ROLE)
+					.antMatchers("/institutionsservice/institutions").hasAuthority(Role.ADMIN_ROLE)
 					.anyRequest().authenticated();
     }
 }

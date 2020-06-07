@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "5b81b2b2-fc51-4190-b4a3-35c342913094",
+		"name": "linktechApiQueries",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Signup Via API gateway",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"username\",\n\t\"password\":\"password\",\n    \"email\" : \"emzeail@mailer.com\",\n    \"firstName\": \"mailer\",\n    \"lastName\": \"rera\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authservice/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authservice",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup via auth service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"name": "Content-Type",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"username\",\n\t\"password\":\"password\",\n    \"email\" : \"emzeail@mailer.com\",\n    \"firstName\": \"mailer\",\n    \"lastName\": \"rera\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3303/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3303",
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users via api gateway",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/usersservice/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usersservice",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login auth service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"password\":\"password\",\n    \"username\" : \"MarkAngelo@user.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3303/auth/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3303",
+					"path": [
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get every user (Api gateway)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXJrQW5nZWxvQHVzZXIuY29tIiwiZXhwIjoxNTkxNTgyNDc1LCJpYXQiOjE1OTE1NDY0NzV9.Pl3IUOF1tpPD3QCB16J0pqC5furoArZgySyHNe87BRY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add to admin role",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXJrQW5nZWxvQHVzZXIuY29tIiwiZXhwIjoxNTkxNTgyNDc1LCJpYXQiOjE1OTE1NDY0NzV9.Pl3IUOF1tpPD3QCB16J0pqC5furoArZgySyHNe87BRY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "pero@mailer.com",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authservice/auth/addToAdminRole",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authservice",
+						"auth",
+						"addToAdminRole"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Institutions (apigateway)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNYXJrQW5nZWxvQHVzZXIuY29tIiwiZXhwIjoxNTkxNTgyNDc1LCJpYXQiOjE1OTE1NDY0NzV9.Pl3IUOF1tpPD3QCB16J0pqC5furoArZgySyHNe87BRY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Tesla\",\n    \"location\" : \"USA\",\n    \"type\" : \"Company\",\n    \"countryName\" : \"USA\",\n    \"sector\" : \"Car\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/institutionsservice/institutions/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"institutionsservice",
+						"institutions",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
