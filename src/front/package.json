@@ -32,7 +32,7 @@
     "webpackbar": "^4.0.0"
   },
   "scripts": {
-    "start": "nodemon -w yarn.lock -w craco.config.js -w ./src/antd.customize.less --exec 'craco start'",
+    "start": "nodemon -w yarn.lock -w craco.config.js -w ./src/antd.customize.less --exec 'npx craco start'",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
